@@ -80,7 +80,7 @@ macOS-path logic in the installer, no font/package installation.
 cd /path/to/ghosttly_setting
 
 # 1. The checked-in config must be valid.
-ghostty +validate-config --config-file ./config.ghostty
+ghostty +validate-config --config-file=./config.ghostty
 
 # 2. Install (safe to re-run).
 ./install.sh
