@@ -8,10 +8,11 @@ run the installer, and verify the result without access to the original host.
 
 ## Source of truth
 
-- `config.ghostty` (repository root) is a verbatim copy of the observed live
-  file `/home/ywchen/.config/ghostty/config.ghostty`.
-- Observed with Ghostty `1.3.0-dev` on Linux. Keep the inline comments; they
-  document why the settings exist.
+- `config.ghostty` (repository root) is the source of truth for this kit. It
+  was reconstructed from the observed live file
+  `/home/ywchen/.config/ghostty/config.ghostty`.
+- The baseline was observed with Ghostty `1.3.0-dev` on Linux. Keep inline
+  comments that document why the settings exist.
 - The live path is `${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/config.ghostty`.
   Ghostty 1.3 uses the `config.ghostty` filename. On macOS it additionally
   searches `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty`,
@@ -20,9 +21,10 @@ run the installer, and verify the result without access to the original host.
 ## Exact config
 
 ```ghostty
-# Visual baseline: Catppuccin Mocha with breathing room.
+# Visual baseline: Catppuccin Mocha with subtle transparency and breathing room.
 # Manual byobu mode: no `command = ...` here, so new windows start in bash.
 theme = Catppuccin Mocha
+background-opacity = 0.85
 font-family = Ubuntu Mono
 font-size = 11
 
@@ -38,6 +40,7 @@ window-padding-color = background
 | Key | Value | Intent |
 | --- | --- | --- |
 | `theme` | `Catppuccin Mocha` | Built-in theme; supplies the whole color scheme. `ghostty +show-config` expands this into `background = #1e1e2e`, `foreground = #cdd6f4`, and the Catppuccin palette. Do not add explicit colors. |
+| `background-opacity` | `0.85` | Makes the terminal background subtly translucent so the desktop shows through; applies to all windows using this config. |
 | `font-family` | `Ubuntu Mono` | Terminal font family. |
 | `font-size` | `11` | Font size in points, DPI-scaled by Ghostty. |
 | `window-padding-x` | `8` | Horizontal padding in points, DPI-scaled. |
@@ -90,12 +93,13 @@ DEST="${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/config.ghostty"
 diff -u ./config.ghostty "$DEST"
 
 # 4. Ghostty must report the effective visual settings.
-ghostty +show-config | grep -E '^(theme|font-family|font-size|window-padding-(x|y|balance)) ='
+ghostty +show-config | grep -E '^(theme|background-opacity|font-family|font-size|window-padding-(x|y|balance)) ='
 ```
 
 Expected output from step 4 (order may differ):
 
 ```text
+background-opacity = 0.85
 font-family = Ubuntu Mono
 font-size = 11
 theme = Catppuccin Mocha
@@ -109,6 +113,10 @@ Also confirm the file-level setting that may be hidden by `+show-config` default
 ```bash
 grep -F 'window-padding-color = background' "$DEST"
 ```
+
+After installation, open a fresh Ghostty window and confirm the desktop is
+subtly visible through the background while text remains readable. No background
+blur is configured.
 
 A successful reconstruction has an empty `diff`, a clean `validate-config`
 exit, and all the lines above present.

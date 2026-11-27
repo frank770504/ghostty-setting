@@ -1,6 +1,7 @@
-# Visual baseline: Catppuccin Mocha with breathing room.
+# Visual baseline: Catppuccin Mocha with subtle transparency and breathing room.
 # Manual byobu mode: no `command = ...` here, so new windows start in bash.
 theme = Catppuccin Mocha
+background-opacity = 0.85
 font-family = Ubuntu Mono
 font-size = 11
 

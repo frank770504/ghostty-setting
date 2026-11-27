@@ -16,10 +16,12 @@ without access to the original machine.
 ## Configuration
 
 The config uses the Catppuccin Mocha theme, Ubuntu Mono at size 11, and
-DPI-scaled padding so text does not touch the window edges:
+85% background opacity so the desktop is subtly visible through Ghostty. It
+also uses DPI-scaled padding so text does not touch the window edges:
 
 ```ghostty
 theme = Catppuccin Mocha
+background-opacity = 0.85
 font-family = Ubuntu Mono
 font-size = 11
 
@@ -73,14 +75,15 @@ DEST="${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/config.ghostty"
 diff -u ./config.ghostty "$DEST"
 
 # Confirm the effective settings reported by Ghostty.
-ghostty +show-config | grep -E '^(theme|font-family|font-size|window-padding-(x|y|balance)) ='
+ghostty +show-config | grep -E '^(theme|background-opacity|font-family|font-size|window-padding-(x|y|balance)) ='
 
 # `window-padding-color` can be hidden by +show-config defaults; check the file.
 grep -F 'window-padding-color = background' "$DEST"
 ```
 
-A clean validation, an empty `diff`, and the expected values from `+show-config`
-mean the reconstruction is complete.
+A clean validation, an empty `diff`, the expected values from `+show-config`, and
+a fresh window showing subtle transparency with readable text mean the
+reconstruction is complete.
 
 ## Making changes
 
